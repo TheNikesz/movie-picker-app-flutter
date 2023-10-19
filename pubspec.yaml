@@ -1,0 +1,28 @@
+name: movie_picker_app_flutter
+description: A new Flutter project.
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ">=3.1.3 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_svg: ^2.0.7
+  google_fonts: ^6.1.0
+
+dev_dependencies:
+  flutter_lints: ^2.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  assets:
+    - assets/disney_plus.svg
+    - assets/hbo_max.svg
+    - assets/netflix.svg
+    - assets/prime_video.svg
+    - assets/tmdb.svg
+
+  uses-material-design: true
