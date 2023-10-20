@@ -105,15 +105,15 @@ class PlatformsList extends StatelessWidget {
                 ActionChip(
                   onPressed: () {
                     final newState = List<int>.from(state.platforms);
-                    state.platforms.contains(10)
-                        ? newState.remove(10)
-                        : newState.add(10);
+                    state.platforms.contains(9)
+                        ? newState.remove(9)
+                        : newState.add(9);
                     final genresSelectCubit =
                         BlocProvider.of<PlatformsSelectCubit>(context);
                     genresSelectCubit.changePlatforms(newState);
                   },
                   side: BorderSide(
-                    color: state.platforms.contains(10)
+                    color: state.platforms.contains(9)
                         ? AppColors.primeVideo
                         : AppColors.outlineDark,
                     width: 2.5,

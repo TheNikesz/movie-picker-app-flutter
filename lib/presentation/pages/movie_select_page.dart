@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_picker_app_flutter/constants/app_colors.dart';
+import 'package:movie_picker_app_flutter/presentation/cubits/genres_select_cubit.dart';
+import 'package:movie_picker_app_flutter/presentation/cubits/movie_cubit.dart';
+import 'package:movie_picker_app_flutter/presentation/cubits/platforms_select_cubit.dart';
 import 'package:movie_picker_app_flutter/presentation/widgets/genres_list.dart';
 import 'package:movie_picker_app_flutter/presentation/widgets/platforms_list.dart';
 
@@ -56,17 +60,30 @@ class MovieSelectPage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 24),
-              child: FilledButton(
-                onPressed: () {},
-                style: FilledButton.styleFrom(
-                  backgroundColor: AppColors.buttonDark,
-                  shape: const CircleBorder(),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.all(14),
-                  child: Icon(Icons.arrow_forward,
-                      color: AppColors.backgroundDark),
-                ),
+              child: BlocBuilder<PlatformsSelectCubit, PlatformsSelectState>(
+                builder: (context, platformsState) {
+                  return BlocBuilder<GenresSelectCubit, GenresSelectState>(
+                    builder: (context, genresState) {
+                      return FilledButton(
+                        onPressed: () {
+                          final movieCubit =
+                              BlocProvider.of<MovieCubit>(context);
+                          movieCubit.getMovies(
+                              platformsState.platforms, genresState.genres);
+                        },
+                        style: FilledButton.styleFrom(
+                          backgroundColor: AppColors.buttonDark,
+                          shape: const CircleBorder(),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(14),
+                          child: Icon(Icons.arrow_forward,
+                              color: AppColors.backgroundDark),
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ]),

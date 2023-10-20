@@ -34,5 +34,5 @@ class Movie {
     );
   }
 
-  factory Movie.fromJson(String source) => Movie.fromMap(json.decode(source));
+  factory Movie.fromJson(Map<String, dynamic> source) => Movie.fromMap(source);
 }
