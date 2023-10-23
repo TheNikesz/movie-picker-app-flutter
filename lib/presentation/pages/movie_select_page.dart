@@ -5,6 +5,7 @@ import 'package:movie_picker_app_flutter/constants/app_colors.dart';
 import 'package:movie_picker_app_flutter/presentation/cubits/genres_select_cubit.dart';
 import 'package:movie_picker_app_flutter/presentation/cubits/movie_cubit.dart';
 import 'package:movie_picker_app_flutter/presentation/cubits/platforms_select_cubit.dart';
+import 'package:movie_picker_app_flutter/presentation/pages/movie_details_page.dart';
 import 'package:movie_picker_app_flutter/presentation/widgets/genres_list.dart';
 import 'package:movie_picker_app_flutter/presentation/widgets/platforms_list.dart';
 
@@ -18,7 +19,7 @@ class MovieSelectPage extends StatelessWidget {
         child: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             const Padding(
-              padding: EdgeInsets.only(top: 40, bottom: 6),
+              padding: EdgeInsets.only(top: 80, bottom: 6),
               child: Text(
                 'What do you want to watch today?',
                 style: TextStyle(
@@ -28,7 +29,7 @@ class MovieSelectPage extends StatelessWidget {
               ),
             ),
             const Padding(
-              padding: EdgeInsets.only(bottom: 24),
+              padding: EdgeInsets.only(bottom: 36),
               child: Icon(
                 Icons.movie,
                 color: AppColors.textDark,
@@ -43,7 +44,7 @@ class MovieSelectPage extends StatelessWidget {
               ),
             ),
             const Padding(
-              padding: EdgeInsets.only(top: 12, bottom: 24),
+              padding: EdgeInsets.only(top: 18, bottom: 36),
               child: PlatformsList(),
             ),
             const Text(
@@ -55,30 +56,50 @@ class MovieSelectPage extends StatelessWidget {
               ),
             ),
             const Padding(
-              padding: EdgeInsets.only(top: 12, bottom: 24),
+              padding: EdgeInsets.only(top: 18, bottom: 36),
               child: GenresList(),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 24),
+              padding: const EdgeInsets.only(bottom: 36),
               child: BlocBuilder<PlatformsSelectCubit, PlatformsSelectState>(
                 builder: (context, platformsState) {
                   return BlocBuilder<GenresSelectCubit, GenresSelectState>(
                     builder: (context, genresState) {
-                      return FilledButton(
-                        onPressed: () {
-                          final movieCubit =
-                              BlocProvider.of<MovieCubit>(context);
-                          movieCubit.getMovies(
-                              platformsState.platforms, genresState.genres);
+                      return BlocListener<MovieCubit, MovieState>(
+                        listener: (context, movieState) {
+                          if (movieState is MovieSuccess) {
+                            final genresSelectCubit =
+                                BlocProvider.of<GenresSelectCubit>(context);
+                            genresSelectCubit.changeGenres([]);
+                            final platformsSelectCubit =
+                                BlocProvider.of<PlatformsSelectCubit>(context);
+                            platformsSelectCubit.changePlatforms([]);
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    MovieDetailsPage(movies: movieState.movies),
+                              ),
+                            );
+                          }
                         },
-                        style: FilledButton.styleFrom(
-                          backgroundColor: AppColors.buttonDark,
-                          shape: const CircleBorder(),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(14),
-                          child: Icon(Icons.arrow_forward,
-                              color: AppColors.backgroundDark),
+                        child: FilledButton(
+                          onPressed: () {
+                            final movieCubit =
+                                BlocProvider.of<MovieCubit>(context);
+                            movieCubit.getMovies(
+                                platformsState.platforms, genresState.genres);
+                          },
+                          style: FilledButton.styleFrom(
+                            backgroundColor: AppColors.buttonDark,
+                            shape: const CircleBorder(),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.all(14),
+                            child: Icon(Icons.arrow_forward,
+                                color: AppColors.backgroundDark),
+                          ),
                         ),
                       );
                     },

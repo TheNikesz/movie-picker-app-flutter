@@ -4,9 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:movie_picker_app_flutter/constants/app_colors.dart';
 import 'package:movie_picker_app_flutter/data/repositories/movie_repository.dart';
+import 'package:movie_picker_app_flutter/domain/models/movie.dart';
 import 'package:movie_picker_app_flutter/presentation/cubits/genres_select_cubit.dart';
 import 'package:movie_picker_app_flutter/presentation/cubits/movie_cubit.dart';
 import 'package:movie_picker_app_flutter/presentation/cubits/platforms_select_cubit.dart';
+import 'package:movie_picker_app_flutter/presentation/pages/movie_details_page.dart';
 import 'package:movie_picker_app_flutter/presentation/pages/movie_select_page.dart';
 
 void main() {

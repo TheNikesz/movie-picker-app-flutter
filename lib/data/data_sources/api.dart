@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:movie_picker_app_flutter/auth/secrets.dart';
 import 'package:movie_picker_app_flutter/domain/models/movie.dart';
