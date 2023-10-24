@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_picker_app_flutter/constants/app_colors.dart';
 import 'package:movie_picker_app_flutter/presentation/cubits/genres_select_cubit.dart';
-import 'package:movie_picker_app_flutter/presentation/cubits/movie_cubit.dart';
+import 'package:movie_picker_app_flutter/presentation/cubits/movies_list_cubit.dart';
 import 'package:movie_picker_app_flutter/presentation/cubits/platforms_select_cubit.dart';
 import 'package:movie_picker_app_flutter/presentation/pages/movie_details_page.dart';
 import 'package:movie_picker_app_flutter/presentation/widgets/genres_list.dart';
@@ -65,9 +65,9 @@ class MovieSelectPage extends StatelessWidget {
                 builder: (context, platformsState) {
                   return BlocBuilder<GenresSelectCubit, GenresSelectState>(
                     builder: (context, genresState) {
-                      return BlocListener<MovieCubit, MovieState>(
-                        listener: (context, movieState) {
-                          if (movieState is MovieSuccess) {
+                      return BlocListener<MoviesListCubit, MoviesListState>(
+                        listener: (context, moviesListState) {
+                          if (moviesListState is MoviesListSuccess) {
                             final genresSelectCubit =
                                 BlocProvider.of<GenresSelectCubit>(context);
                             genresSelectCubit.changeGenres([]);
@@ -78,17 +78,17 @@ class MovieSelectPage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    MovieDetailsPage(movies: movieState.movies),
+                                builder: (context) => MovieDetailsPage(
+                                    movies: moviesListState.movies),
                               ),
                             );
                           }
                         },
                         child: FilledButton(
                           onPressed: () {
-                            final movieCubit =
-                                BlocProvider.of<MovieCubit>(context);
-                            movieCubit.getMovies(
+                            final moviesListCubit =
+                                BlocProvider.of<MoviesListCubit>(context);
+                            moviesListCubit.getMovies(
                                 platformsState.platforms, genresState.genres);
                           },
                           style: FilledButton.styleFrom(
